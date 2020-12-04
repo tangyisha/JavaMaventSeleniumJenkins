@@ -12,9 +12,7 @@ public class App {
     }
 
     public ContactPage toMebmerAdd(){
-        driver.findElement(By.xpath("//span[text()='添加成员']"));
-        //driver.findElement(By.xpath("//span[contains(text(),添加)]"));
-
+        driver.findElement(By.xpath("//span[text()='添加成员']")).click();
         return new ContactPage();
 
     }
