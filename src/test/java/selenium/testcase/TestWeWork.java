@@ -6,52 +6,47 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import selenium.Page.App;
+import selenium.Page.ContactPage;
 
 import java.util.concurrent.TimeUnit;
 
-public class TestWeWork {
-    public static String url = "https://work.weixin.qq.com/";
+public class TestWeWork{
+    public static App app;
+    public static ContactPage contactPage;
 
-    @Before
-    public void setUp(){}
-        WebDriver driver = new ChromeDriver();
-
-
-    @AfterMethod
-    public void after(){
-        driver.quit();
+    @BeforeClass
+    public static void beforeAll(){
+        app = new App();
+        app.loginWithCookie();
+        String mobile = "15600534762";
+        app.toContact().delete(mobile);
     }
 
-    @Test
-    public void testStart(){
+    @AfterClass
+    public void after(){
         try {
-            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            driver.get(url);
-            //窗口最大化
-            driver.manage().window().maximize();
-            driver.findElement(By.linkText("企业登录")).click();
-            //获取浏览器的cookies
-            //System.out.println(driver.manage().getCookies());
-            //添加cookie
-            driver.manage().addCookie(new Cookie("wwrtx.refid","40709640823144156"));
-            driver.manage().addCookie(new Cookie("wwrtx.sid","xMKtvrK3Z9GsN9SUlgoQRkIRCHpu-okMOOCnDr8MSERhjJtd3H53CN6h-s5r8bto"));
-            Thread.sleep(3000);
-            //刷新浏览器
-            driver.navigate().refresh();
-            App.driver = driver;
-            App app = new App();
-            String mobile = "15600534762";
-            app.toMebmerAdd().add(mobile, mobile, mobile);
-
+            app.quit();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
+    @Test
+    public void testAdd(){
+        String mobile = "15600534762";
+        app.toMebmerAdd().add(mobile, mobile, mobile);
 
     }
 
+    @Test
+    public void testDelete(){
+        String mobile = "15600534763";
+        app.toMebmerAdd().add(mobile, mobile, mobile).delete(mobile);
+    }
 
 }
