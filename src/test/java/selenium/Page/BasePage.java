@@ -10,18 +10,19 @@ public class BasePage {
     public static WebDriver driver;
 
     public WebElement findElement(By by){
+        waitClickable(by);
         return driver.findElement(by);
 
     }
 
-    public void waitClickable(By by, int timeout){
+    public WebElement waitClickable(By by, int timeout){
         //显式等待
-        new WebDriverWait(driver, timeout).until(ExpectedConditions.elementToBeClickable(by)).click();
+        return new WebDriverWait(driver, timeout).until(ExpectedConditions.elementToBeClickable(by));
     }
 
-    public void waitClickable(By by){
+    public WebElement waitClickable(By by){
         //显式等待
-        new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(by)).click();
+        return new  WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(by));
     }
 
     public void quit() throws InterruptedException {

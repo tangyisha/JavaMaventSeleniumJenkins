@@ -6,10 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import selenium.Page.App;
 import selenium.Page.ContactPage;
 
@@ -17,17 +14,15 @@ import java.util.concurrent.TimeUnit;
 
 public class TestWeWork{
     public static App app;
-    public static ContactPage contactPage;
 
-    @BeforeClass
+    @BeforeMethod
     public static void beforeAll(){
         app = new App();
         app.loginWithCookie();
-        String mobile = "15600534762";
-        app.toContact().delete(mobile);
+
     }
 
-    @AfterClass
+    @AfterMethod
     public void after(){
         try {
             app.quit();
@@ -39,6 +34,7 @@ public class TestWeWork{
     @Test
     public void testAdd(){
         String mobile = "15600534762";
+        app.toContact().delete(mobile);
         app.toMebmerAdd().add(mobile, mobile, mobile);
 
     }
@@ -48,5 +44,17 @@ public class TestWeWork{
         String mobile = "15600534763";
         app.toMebmerAdd().add(mobile, mobile, mobile).delete(mobile);
     }
+
+    @Test
+    public void testDeleteCurrent() throws InterruptedException {
+        app.toContact().deleteCurrentPage();
+    }
+
+    @Test
+    public void testImportFromFile() {
+        String filePath = "/Users/tangyisha/Downloads/通讯录批量导入模板.xlsx";
+        app.toContact().importFromFile(filePath);
+    }
+
 
 }
